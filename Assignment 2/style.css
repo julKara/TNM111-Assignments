@@ -1,0 +1,22 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Style for main content */
+h1{
+    color: #333;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+/* Addtional styles for presentation */
+html{
+    scroll-behavior: smooth;
+}
