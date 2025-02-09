@@ -1,37 +1,23 @@
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f1ede7;
+body {
+    font-family: Arial, sans-serif;
     text-align: center;
-    margin: 0;
-    padding-bottom: 20vh;
-    /*display: flex;*/
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
 }
 
-/* Style for main content */
-h1{
-    color: #333;
-    text-align: center;
-    font-size: 2.5rem;
-}
-
-/* Addtional styles for presentation */
-#legend {
+#scatterPlotContainer {
+    width: 600px;
+    height: 600px;
     margin: 20px auto;
-    padding: 30px;
-    width: 300px;
-    background-color: white;
-    border: 1px solid #ccc;
+    border: 1px solid black;
+    position: relative;
 }
 
 canvas {
-    display: block;
-    margin: auto;
-    border: 3px solid black;
+    width: 100%;
+    height: 100%;
 }
 
-html{
-    scroll-behavior: smooth;
+#legend {
+    margin-top: 20px;
+    text-align: left;
+    display: inline-block;
 }
