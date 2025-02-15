@@ -47,18 +47,35 @@ function focusPlusContext(data) {
      * Task 1 - Parse date with timeParse to year-month-day
      */
 
+    // https://d3js.org/d3-time-format#timeParse 
+    parseDate = d3.timeParse("%Y-%m-%d");   // Output format: Y-m-d
+
     /**
      * Task 2 - Define scales and axes for scatterplot
      */
+
+    var xScale = d3.scaleTime().range([0, width]);  // Time scale for X-axis
+    var yScale = d3.scaleLinear().range([height, 0]);  // Linear scale for Y-axis (height)
+
+    var xAxis = d3.axisBottom(xScale);  // Bottom axis for X-scale
+    var yAxis = d3.axisLeft(yScale);  // Left axis for Y-scale
 
     /**
      * Task 3 - Define scales and axes for context (Navigation through the data)
      */
 
+    var navXScale = d3.scaleTime().range([0, width]);  // Time scale for navigation X-axis
+    var navYScale = d3.scaleLinear().range([height2, 0]);  // Linear scale for navigation Y-axis (height2)
+    
+    var navXAxis = d3.axisBottom(navXScale);  // Bottom axis for navigation X-scale
+
     /**
      * Task 4 - Define the brush for the context graph (Navigation)
      */
 
+    var brush = d3.brushX()
+    .extent([[0, 0], [width, height2]])  // Setting brush extent
+    .on("brush end", brushed);  // Call brushed() function when the brush is used
 
     //Setting scale parameters
     var maxDate = d3.max(data.features, function (d) { return parseDate(d.properties.Date) });
