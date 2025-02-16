@@ -200,7 +200,7 @@ function focusPlusContext(data) {
      * plot(points,nr,nr) no need to send any integers!
      */
 
-    points.plot(selected_dots, 0.7, 0.7);   // Plot dots, the smaller nr, the bigger dots
+    points.plot(selected_dots, 0.7, 0.7);   // Plot dots in the style of selected dots, the smaller nr, the bigger dots
 
     //<---------------------------------------------------------------------------------------------------->
 
@@ -217,7 +217,7 @@ function focusPlusContext(data) {
             /**
              * Task 13 - Update information in the "tooltip" by calling the tooltip function.
              */
-
+            points.tooltip(d);  // Added
 
             //Rescale the dots onhover
             d3.select(this).attr('r', 15)
