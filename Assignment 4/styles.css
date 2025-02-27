@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* Bassically all of the content of the page */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.controls {
+    margin-bottom: 10px;
+}
+
+/* The container for both graphs (svg;s) */
+.graph-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+/* The two window of the node-link diagrams */
+svg {
+    width: 800px; /* Fix based on screen */
+    height: 800px;
+    border: 1px solid #ccc;
+}
+
+/* The popup when hovering */
+.tooltip {
+    position: absolute;
+    text-align: center;
+    background: lightgray;
+    padding: 5px;
+    border-radius: 5px;
+    display: none;
+}
+
+/*  The circles in network*/
+circle {
+    stroke: black;
+    stroke-width: 1px;
+}
+/*  Edges in network     */
+line {
+    stroke: #999;
+    stroke-opacity: 0.6;
+}

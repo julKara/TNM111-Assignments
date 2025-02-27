@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Wars Network Visualization</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Star Wars Character Interactions</h1>
+        <div class="controls">
+            <label for="weightSlider">Edge Weight Filter:</label>
+            <input type="range" id="weightSlider" min="0" max="50" step="1" value="0">
+            <span id="weightValue">0</span> <!-- Currently selected weight value, used in script-->
+        </div>
+        <div class="graph-container">
+            <svg id="graph1"></svg>
+            <svg id="graph2"></svg>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
