@@ -35,7 +35,14 @@ d3.json("starwars-full-interactions-allCharacters.json").then(data => {
         const link = svgGroup.selectAll(".link")
             .data(links)
             .enter().append("line")
-            .attr("class", "link");
+            .attr("class", "link")
+            .on("mouseover", (event, d) => {    // Show tooltip when hovering over nodes
+                tooltip.style("display", "block")
+                    .html(`Characters: ${d.source.name} & ${d.target.name} <br> Number of scenes together: ${d.value}`)
+                    .style("left", (event.pageX + 5) + "px")
+                    .style("top", (event.pageY - 5) + "px");
+            })
+            .on("mouseout", () => tooltip.style("display", "none"));
 
         // Defines nodes (characters)
         const node = svgGroup.selectAll(".node")
@@ -108,5 +115,5 @@ d3.json("starwars-full-interactions-allCharacters.json").then(data => {
     drawGraph(svg1Group, nodes, links);
     drawGraph(svg2Group, nodes, links);
 
-    // Also add brushing & control pannel
+    // Also add brushing, tooltip edges & control pannel
 });
