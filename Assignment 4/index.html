@@ -11,6 +11,17 @@
     <div class="container">
         <h1>Star Wars Character Interactions</h1>
         <div class="controls">
+            <!-- Select dataset -->
+            <label for="fileInput">Choose dataset:</label>
+            <!-- Adds button that allows user to select json file -->
+            <input type="file" id="fileInput" accept=".json"/>
+
+            <button id="selectFile">Confirm dataset</button>
+
+            <br>
+            <br>
+
+            <!-- Weight slider -->
             <label for="weightSlider">Edge Weight Filter:</label>
             <input type="range" id="weightSlider" min="0" max="50" step="1" value="0">
             <span id="weightValue">0</span> <!-- Currently selected weight value, used in script-->

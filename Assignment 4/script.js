@@ -19,10 +19,36 @@ const svg2Group = svg2.append("g");
 
 const tooltip = d3.select("body").append("div").attr("class", "tooltip");
 
-// Load the JSON data
-d3.json("starwars-full-interactions-allCharacters.json").then(data => {
+// Variable to store the selected dataset
+var data;
+
+// Read the selected json file and store it in "data"
+(function(){    
+    function onChange(event) {
+        var reader = new FileReader();
+        reader.onload = onReaderLoad;
+        reader.readAsText(event.target.files[0]);
+    }
+
+    function onReaderLoad(event){
+        data = JSON.parse(event.target.result);
+    }
+    
+    document.getElementById('fileInput').addEventListener('change', onChange);
+
+}());
+
+
+// Button to fraw graphs after dataset has been selected
+// (Thinks breaks if the code tries to draw a graph before a dataset has been selected, that's why this is needed)
+let btn = document.querySelector("#selectFile")
+btn.addEventListener("click", function() {
     let nodes = data.nodes;
     let links = data.links;
+
+    // Clear the svgs so that a new dataset can be selected
+    svg1Group.selectAll("*").remove();
+    svg2Group.selectAll("*").remove();
 
     function drawGraph(svgGroup, nodes, links) {
         // Set up force simulation with physics like in D3 in Depth (https://www.d3indepth.com/force-layout/ )
