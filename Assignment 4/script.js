@@ -22,6 +22,9 @@ const tooltip = d3.select("body").append("div").attr("class", "tooltip");
 // Variable to store the selected dataset
 var data;
 
+// Variable used to reset highlight. Temp values used so it doesn't match any of the existing nodes.
+var lastNode = {"name": "temp", "value": 0, "colour": "#808080"};
+
 // Read the selected json file and store it in "data"
 (function(){    
     function onChange(event) {
@@ -39,8 +42,8 @@ var data;
 }());
 
 
-// Button to fraw graphs after dataset has been selected
-// (Thinks breaks if the code tries to draw a graph before a dataset has been selected, that's why this is needed)
+// Button to draw graphs after dataset has been selected
+// (Things breaks if the code tries to draw a graph before a dataset has been selected, that's why this is needed)
 let btn = document.querySelector("#selectFile")
 btn.addEventListener("click", function() {
     let nodes = data.nodes;
@@ -77,6 +80,7 @@ btn.addEventListener("click", function() {
             .attr("class", "node")
             .attr("r", d => Math.sqrt(d.value) * 2) // Scale node size by its value
             .attr("fill", d => d.colour) // Set character color
+            .attr("stroke", "black")
             .call(drag(simulation)) // Make nodes draggable (function bellow)
             .on("mouseover", (event, d) => {    // Show tooltip when hovering over nodes
                 tooltip.style("display", "block")
@@ -85,7 +89,7 @@ btn.addEventListener("click", function() {
                     .style("top", (event.pageY - 5) + "px");
             })
             .on("mouseout", () => tooltip.style("display", "none"))
-            .on("click", (event, d) => highlightNode(d)); // Highlight node on click (doesnt work)
+            .on("click", (event, d) => highlightNode(d)); // Highlight node on click
 
         // Update positions dynamically every tick (function call) like in D3 in Depth (https://www.d3indepth.com/force-layout/ )
         simulation.on("tick", () => {
@@ -117,10 +121,26 @@ btn.addEventListener("click", function() {
         return d3.drag().on("start", dragStarted).on("drag", dragged).on("end", dragEnded);
     }
 
-    // Highlight the selected node in both graphs (doesn't work)
+    // Highlight the selected node in both graphs
     function highlightNode(selectedNode) {
-        svg1.selectAll(".node").attr("stroke", d => d.name === selectedNode.name ? "red" : "black");
-        svg2.selectAll(".node").attr("stroke", d => d.name === selectedNode.name ? "red" : "black");
+        
+        svg1.selectAll(".node")
+            .attr("stroke", d => d.name === selectedNode.name && d.name != lastNode.name ? "red" : "black") // Set stroke color of selected node to red and keep all others as black. If the same node is clicked twice then reset.
+            .attr("stroke-width", d => d.name === selectedNode.name && d.name != lastNode.name ? 2 : 1); // Set stroke width of selected node to 2 and keep all others as 1 (default). If the same node is clicked twice then reset.
+        
+        svg2.selectAll(".node")
+            .attr("stroke", d => d.name === selectedNode.name && d.name != lastNode.name ? "red" : "black") // Set stroke color of selected node to red and keep all others as black. If the same node is clicked twice then reset.
+            .attr("stroke-width", d => d.name === selectedNode.name && d.name != lastNode.name ? 2 : 1); // Set stroke width of selected node to 2 and keep all others as 1 (default). If the same node is clicked twice then reset.
+
+        // If a new node is clicked set lastNode to the current node. If the same node is clicked twice, reset last node to a temp value.
+        // This allows you to deselect a highlighted node
+        if (selectedNode == lastNode) {
+            lastNode = {"name": "temp", "value": 0, "colour": "#808080"};
+        }
+        else {
+            lastNode = selectedNode;
+        }
+        
     }
 
     // Interactive edge weight filter
@@ -141,5 +161,5 @@ btn.addEventListener("click", function() {
     drawGraph(svg1Group, nodes, links);
     drawGraph(svg2Group, nodes, links);
 
-    // Also add brushing, tooltip edges & control pannel
+
 });

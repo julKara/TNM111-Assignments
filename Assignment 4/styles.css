@@ -12,6 +12,8 @@ body {
 
 .controls {
     margin-bottom: 10px;
+    border: 2px solid #ccc;
+    padding: 10px;
 }
 
 /* The container for both graphs (svg;s) */
@@ -39,10 +41,10 @@ svg {
 }
 
 /*  The circles in network*/
-circle {
+/* circle {
     stroke: black;
     stroke-width: 1px;
-}
+} */
 /*  Edges in network     */
 line {
     stroke: #999;
