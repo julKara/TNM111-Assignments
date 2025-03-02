@@ -10,11 +10,27 @@
 <body>
     <div class="container">
         <h1>Star Wars Character Interactions</h1>
-        <div class="controls">
+        
+        <div class="control-panel">
+            <h3>Graph Controls</h3>
+            
+            <!-- Checkboxes for toggling size behavior -->
+            <label>
+                <input type="checkbox" id="toggleLinkWeight" checked> Scale Link Thickness by Weight
+            </label>
+            <label>
+                <input type="checkbox" id="toggleNodeWeight" checked> Scale Node Size by Weight
+            </label>
+            
+            <hr>
+            
+            <!-- Edge weight filter -->
             <label for="weightSlider">Edge Weight Filter:</label>
             <input type="range" id="weightSlider" min="0" max="50" step="1" value="0">
-            <span id="weightValue">0</span> <!-- Currently selected weight value, used in script-->
+            <span id="weightValue">0</span>
         </div>
+        
+
         <div class="graph-container">
             <svg id="graph1"></svg>
             <svg id="graph2"></svg>
