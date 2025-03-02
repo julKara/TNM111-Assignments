@@ -28,11 +28,22 @@ svg {
     border: 1px solid #ccc;
 }
 
-/* The popup when hovering */
+/* The popup when hovering over nodes */
 .tooltip {
     position: absolute;
     text-align: center;
-    background: lightgray;
+    background: rgb(255, 67, 67);
+    padding: 5px;
+    border-radius: 5px;
+    display: none;
+}
+
+/* The popup when hovering over links */
+.tooltipLink {
+    position: absolute;
+    text-align: center;
+    -webkit-text-fill-color: rgb(0, 0, 0);
+    background: rgb(119, 255, 255);
     padding: 5px;
     border-radius: 5px;
     display: none;
@@ -43,7 +54,7 @@ circle {
     stroke: black;
     stroke-width: 1px;
 }
-/*  Edges in network     */
+/*  Edges in network    */
 line {
     stroke: #999;
     stroke-opacity: 0.6;
