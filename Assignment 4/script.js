@@ -1,5 +1,5 @@
 
-// Zoom-functionality section ************************************************************************************************************************** 
+// Zoom-functionality & SvG section section ************************************************************************************************************************** 
 const width = 700, height = 700; // Size for SVGs
 
 // Select the two SVG elements and set up zoom functionality
@@ -10,10 +10,6 @@ const svg1 = d3.select("#graph1")
 const svg2 = d3.select("#graph2")
     .attr("width", width)
     .attr("height", height);
-
-// Create groups for zooming inside SVGs
-const svg1Group = svg1.append("g");
-const svg2Group = svg2.append("g");
 
 // Add labels to the bottom right corners of the SVGs
 svg1.append("text")
@@ -32,6 +28,10 @@ svg2.append("text")
     .style("fill", "red")
     .text("Overview");
 
+
+    // Create groups for zooming inside SVGs
+const svg1Group = svg1.append("g");
+const svg2Group = svg2.append("g");
 
 // Add zoom functionality with a wider range (0.2x to 4x)
 const zoom1 = d3.zoom().scaleExtent([0.2, 4]).on("zoom", (event) => {
@@ -181,7 +181,7 @@ d3.json("starwars-full-interactions-allCharacters.json").then(data => {
 
         let filteredLinks1 = links1.filter(d => d.value >= minWeight); // Filter only links in svg1
 
-        // ** Redraw graph **
+        // Remove element and redraw graph 
         svg1Group.selectAll("*").remove();
         drawGraph(svg1Group, nodes1, filteredLinks1, true);
     });
