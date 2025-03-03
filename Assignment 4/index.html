@@ -14,6 +14,13 @@
         <div class="control-panel">
             <h3>Graph Controls</h3>
             
+            <!-- Select dataset -->
+            <label for="fileInput">Choose dataset:</label>
+            <!-- Adds button that allows user to select json file -->
+            <input type="file" id="fileInput" accept=".json"/>
+
+            <button id="selectFile">Confirm dataset</button>
+
             <!-- Checkboxes for toggling size behavior -->
             <label>
                 <input type="checkbox" id="toggleLinkWeight" checked> Scale Link Thickness by Weight

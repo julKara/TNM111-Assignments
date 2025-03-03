@@ -85,14 +85,43 @@ function updateCheckboxStates() {
     document.getElementById("toggleNodeWeight").checked = nodeWeightEnabled;
 }
 
-// Play on load of the JSON
-d3.json("starwars-full-interactions-allCharacters.json").then(data => {
+// Variable to store the selected dataset
+var data;
+
+// Variable used to reset highlight. Temp values used so it doesn't match any of the existing nodes.
+var lastNode = {"name": "temp", "value": 0, "colour": "#808080"};
+
+// Read the selected json file and store it in "data"
+(function(){    
+    function onChange(event) {
+        var reader = new FileReader();
+        reader.onload = onReaderLoad;
+        reader.readAsText(event.target.files[0]);
+    }
+
+    function onReaderLoad(event){
+        data = JSON.parse(event.target.result);
+    }
+   
+    document.getElementById('fileInput').addEventListener('change', onChange);
+
+}());
+
+
+// Button to draw graphs after dataset has been selected
+// (Things breaks if the code tries to draw a graph before a dataset has been selected, that's why this is needed)
+let btn = document.querySelector("#selectFile")
+btn.addEventListener("click", function() {
 
     // Nodes and links for each window
     let nodes1 = JSON.parse(JSON.stringify(data.nodes)); // Independent copy for svg1
     let nodes2 = JSON.parse(JSON.stringify(data.nodes)); // Independent copy for svg2
     let links1 = JSON.parse(JSON.stringify(data.links)); // Independent copy for svg1
     let links2 = JSON.parse(JSON.stringify(data.links)); // Independent copy for svg2
+
+    // Clear the svgs so that a new dataset can be selected
+    svg1Group.selectAll("*").remove();
+    svg2Group.selectAll("*").remove();
 
     // Draws the node-link diagram in svg
     function drawGraph(svgGroup, nodes, links, draggable = true) {
@@ -125,13 +154,15 @@ d3.json("starwars-full-interactions-allCharacters.json").then(data => {
             .attr("class", "node")
             .attr("r", d => nodeWeightEnabled ? Math.sqrt(d.value) * 2 : 5) // Toggle node size based on weight
             .attr("fill", d => d.colour)
+            .attr("stroke", "black")
             .on("mouseover", (event, d) => {  
                 tooltip.style("display", "block")
                     .html(`Name: ${d.name} <br> Scenes: ${d.value}`)
                     .style("left", (event.pageX + 5) + "px")
                     .style("top", (event.pageY - 5) + "px");
             })
-            .on("mouseout", () => tooltip.style("display", "none"));
+            .on("mouseout", () => tooltip.style("display", "none"))
+            .on("click", (event, d) => highlightNode(d)); // Highlight node on click
 
         // Make nodes draggable only if `draggable` is true
         if (draggable) {
@@ -168,11 +199,27 @@ d3.json("starwars-full-interactions-allCharacters.json").then(data => {
         return d3.drag().on("start", dragStarted).on("drag", dragged).on("end", dragEnded);
     }
 
-    // Highlight the selected node in both graphs (DOESN'T WORK)
+    // Highlight the selected node in both graphs
     function highlightNode(selectedNode) {
-        svg1Group.selectAll(".node").attr("stroke", d => d.name === selectedNode.name ? "red" : "black");
-        svg2Group.selectAll(".node").attr("stroke", d => d.name === selectedNode.name ? "red" : "black");
+       
+        svg1.selectAll(".node")
+            .attr("stroke", d => d.name === selectedNode.name && d.name != lastNode.name ? "red" : "black") // Set stroke color of selected node to red and keep all others as black. If the same node is clicked twice then reset.
+            .attr("stroke-width", d => d.name === selectedNode.name && d.name != lastNode.name ? 2 : 1); // Set stroke width of selected node to 2 and keep all others as 1 (default). If the same node is clicked twice then reset.
+       
+        svg2.selectAll(".node")
+            .attr("stroke", d => d.name === selectedNode.name && d.name != lastNode.name ? "red" : "black") // Set stroke color of selected node to red and keep all others as black. If the same node is clicked twice then reset.
+            .attr("stroke-width", d => d.name === selectedNode.name && d.name != lastNode.name ? 2 : 1); // Set stroke width of selected node to 2 and keep all others as 1 (default). If the same node is clicked twice then reset.
+
+        // If a new node is clicked set lastNode to the current node. If the same node is clicked twice, reset last node to a temp value.
+        // This allows you to deselect a highlighted node
+        if (selectedNode == lastNode) {
+            lastNode = {"name": "temp", "value": 0, "colour": "#808080"};
+        }
+        else {
+            lastNode = selectedNode;
+        }  
     }
+
 
     // Interactive edge weight filter
     document.getElementById("weightSlider").addEventListener("input", function() {
